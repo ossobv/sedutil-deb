@@ -1,0 +1,11 @@
+--- a/linux/TestSuite.sh
++++ b/linux/TestSuite.sh
+@@ -12,7 +12,7 @@ echo  Last chance to hit Ctrl-c an keep the data on your drive
+ read INPUT
+ ## test sedutil commands
+ ##PROG=./CLI/dist/Release_i686/GNU-Linux/sedutil-cli
+-PROG=./CLI/dist/Release_x86_64/GNU-Linux/sedutil-cli
++PROG=/usr/sbin/sedutil-cli
+ ##PROG=./sedutil-cli
+ ##PROG=echo 
+ LOGFILE=sedutil_baseline

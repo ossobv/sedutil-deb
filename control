@@ -1,0 +1,43 @@
+Source: sedutil
+Priority: optional
+Maintainer: Walter Doekes <wjdoekes+sedutil@osso.nl>
+Build-Depends:
+ debhelper (>= 9),
+ autotools-dev,
+ dh-autoreconf,
+Standards-Version: 3.9.6
+Section: admin
+Homepage: http://www.linphone.org/technical-corner/bcg729/overview
+Vcs-Browser: https://github.com/BelledonneCommunications/bcg729
+Vcs-Git: git://git.linphone.org/bcg729.git
+
+Package: sedutil-cli
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: sedutil-cli is a utility to manage OPAL self encrypting drives
+ sedutil-cli is a utility to manage self encrypting drives that conform
+ to the Trusted Computing Group (TCG) OPAL 2.0 SSC specification.
+
+Package: sedutil-linuxpba
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: linuxpba is a PreBootAuth tool for OPAL self encrypting drives
+ This package contains the (oddly named) linuxpba which decrypts drives at
+ boot time before resuming boot.
+ .
+ Note that you'll need additional tooling to get this to work. Likely, you'll
+ want this tool in an initramfs bundle.
+ .
+ Also, the reboot() code in the linuxpba binary implies that it works by
+ warm rebooting: "yes, the drive is reset to the encrypted state when it
+ is unpowered, and can sustain reboots in unlocked state as long as the
+ hardware is still having power during the reboot", which could be
+ vulnerable to liveboot attacks.

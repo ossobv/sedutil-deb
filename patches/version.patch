@@ -1,0 +1,14 @@
+--- a/linux/GitVersion.sh
++++ b/linux/GitVersion.sh
+@@ -1,9 +1,4 @@
+ #!/bin/bash 
+ set -x
+-GIT=`which git`
+-if [ "x"${GIT} == "x" ]; then
+-	echo "#define GIT_VERSION \"tarball\""
+-else
+-	GITVER=`git describe --dirty`
+-	echo "#define GIT_VERSION " \"$GITVER\"
+-fi
++GITVER=$(pwd | sed -e 's#.*/##;s/[^-]*-//')
++echo "#define GIT_VERSION \"$GITVER\""

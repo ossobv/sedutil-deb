@@ -1,0 +1,14 @@
+Description: make linuxpba statically built
+ If this is going into an initramfs or similar, we need it to be
+ self-sufficient.
+
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -39,6 +39,7 @@ linuxpba_SOURCES = LinuxPBA/LinuxPBA.cpp LinuxPBA/GetPassPhrase.cpp LinuxPBA/Unl
+ 	linux/DtaDevLinuxDrive.h linux/os.h \
+ 	\
+ 	$(SEDUTIL_COMMON_CODE)
++linuxpba_LDFLAGS = -static $(AM_LDFLAGS)
+ EXTRA_DIST = linux/GitVersion.sh linux/PSIDRevert_LINUX.txt linux/TestSuite.sh README.md docs/sedutil-cli.8
+ man_MANS = docs/sedutil-cli.8
+ linux/Version.h:
