@@ -66,7 +66,19 @@ try_unlock() {
         fi
     fi
     if test -n "$PASSWORD"; then
-        sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"
+        if sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"; then
+            local try
+            # I think this works immediately. But we may need to see
+            # some live action in the field to confirm.
+            for try in 1 1 1 1 1 1 1 0; do
+                partx -u "$dev" 2>/dev/null && break || true
+                echo -n .
+                sleep $try
+            done
+            if test $try -eq 0; then
+                partx -u "$dev" || echo "failed to load partitions on $dev"
+            fi
+        fi
     fi
 }
 
