@@ -1,3 +1,16 @@
+sedutil (1.20.0-0osso0+REL) stable; urgency=medium
+
+  * New release.
+  * Cherry-picked notes from the git log:
+    - Disable acpi & apic for better compatibility
+    - Minor updates to linuxpba (give the user time to view unlock results)
+    - Fix hard-coded /dev/sda
+    - Fix PIN dump in --query output (no more garbage in output)
+    - Scanning did not work with SAS (TCG/Enterprise) drives
+    - Correcting allow_tpm w.r.t NVMe
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Wed, 29 Jun 2022 14:57:52 +0200
+
 sedutil (1.15.1-0osso1+REL) stable; urgency=medium
 
   * Add sedutil-helper (sedutil-unlock-all).

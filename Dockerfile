@@ -43,8 +43,8 @@ RUN . /etc/os-release && \
 # is made conditional by the "[z]" "wildcard". (We need one existing
 # file (README.rst) so the COPY doesn't fail.)
 COPY ./README.rst .cache/${upname}_${upversion}.orig.tar.g[z] /build/
-# md5sum for 1.15.1
-ARG upsrc_md5=610301fca946d515251c30a4e26bd6a0
+#ARG upsrc_md5=610301fca946d515251c30a4e26bd6a0  # for 1.15.1
+ARG upsrc_md5=a3e035ae167936ba9364bb121120b499  # for 1.20.0
 RUN if ! test -s /build/${upname}_${upversion}.orig.tar.gz; then \
     url="https://codeload.github.com/Drive-Trust-Alliance/sedutil/tar.gz/${upversion}" && \
     echo "Fetching: ${url}" >&2 && \

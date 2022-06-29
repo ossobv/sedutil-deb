@@ -4,9 +4,9 @@ Description: make linuxpba statically built
 
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -39,6 +39,7 @@ linuxpba_SOURCES = LinuxPBA/LinuxPBA.cpp LinuxPBA/GetPassPhrase.cpp LinuxPBA/Unl
- 	linux/DtaDevLinuxDrive.h linux/os.h \
- 	\
+@@ -41,6 +41,7 @@ linuxpba_SOURCES = LinuxPBA/LinuxPBA.cpp
+ 	LinuxPBA/GetPassPhrase.h LinuxPBA/UnlockSEDs.h \
+ 	$(SEDUTIL_LINUX_CODE) \
  	$(SEDUTIL_COMMON_CODE)
 +linuxpba_LDFLAGS = -static $(AM_LDFLAGS)
  EXTRA_DIST = linux/GitVersion.sh linux/PSIDRevert_LINUX.txt linux/TestSuite.sh README.md docs/sedutil-cli.8
