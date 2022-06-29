@@ -7,9 +7,9 @@ Build-Depends:
  dh-autoreconf,
 Standards-Version: 3.9.6
 Section: admin
-Homepage: http://www.linphone.org/technical-corner/bcg729/overview
-Vcs-Browser: https://github.com/BelledonneCommunications/bcg729
-Vcs-Git: git://git.linphone.org/bcg729.git
+Homepage: https://github.com/Drive-Trust-Alliance/sedutil/
+Vcs-Browser: https://github.com/Drive-Trust-Alliance/sedutil/
+Vcs-Git: https://github.com/Drive-Trust-Alliance/sedutil.git
 
 Package: sedutil-cli
 Architecture: any
