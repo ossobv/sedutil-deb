@@ -1,3 +1,10 @@
+sedutil (1.20.0-0osso1+REL) stable; urgency=medium
+
+  * Add partx + wait to sedutil-helper after unlock. Should fix missing
+    imports in e.g. zfs pools.
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Wed, 29 Jun 2022 16:52:42 +0200
+
 sedutil (1.20.0-0osso0+REL) stable; urgency=medium
 
   * New release.
