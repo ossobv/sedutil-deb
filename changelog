@@ -1,4 +1,4 @@
-sedutil (1.15.1-0osso1+ubu20.04) focal; urgency=medium
+sedutil (1.15.1-0osso1+REL) stable; urgency=medium
 
   * Add sedutil-helper (sedutil-unlock-all).
   * Fix URLs in control file.
