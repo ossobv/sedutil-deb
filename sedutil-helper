@@ -1,0 +1,107 @@
+#!/bin/sh
+# sedutil-helper (part of ossobv/sedutil-deb) // wdoekes/2022 // Public Domain
+#
+# Script to simplify unlocking multiple drives with the same password.
+#
+set -eu
+
+PASSWORD=${SED_PASSWORD:-}
+DEVICES=${SED_DEVICES:-}
+ARGV0=${0##*/}
+
+case ${1:-} in
+-h|--help)
+    echo 'Helper for Self-encrypting drives (SED)'
+    echo 'usage: sedutil-helper       # to list SED drives'
+    echo 'usage: sedutil-unlock       # to unlock SED drives'
+    echo
+    echo 'optional env: SED_DEVICES SED_PASSWORD'
+    exit 0
+esac
+if test $# -ne 0; then
+    echo "unexpected args, see --help" >&2
+    exit 1
+fi
+if ! command -v sedutil-cli >/dev/null; then
+    echo "you have no sedutil-cli" >&2
+    exit 1
+fi
+
+try_lock() {
+    local dev="$1"
+
+    local pci=
+    for pci in /dev/disk/by-path/pci*; do
+        test "$(readlink -f "$pci")" = "$dev" && break
+        pci=
+    done
+
+    if test -n "$pci"; then
+        # /dev/disk/by-path/pci-0000:c3:00.0-nvme-1
+        local address
+        address=${pci##*/pci-}
+        address=${address%.*}
+        local slot
+        slot=$(grep -lxF "$address" /sys/bus/pci/slots/*/address)
+        if test -n "$slot"; then
+            # THIS HAS UNEXPECTED EFFECTS; NOT SURE IF YOU WANT THIS
+            echo "> $pci -> $(readlink -f "$pci")"
+            echo "> cat $slot  # $(cat $slot)"
+            echo '# zpool export POOL  # do this first'
+            echo "# echo 0 >${slot%/address}/power  # then this at own risk!"
+            echo "# echo 1 >${slot%/address}/power  # after some waiting"
+        fi
+    fi
+
+    echo '(the above is not implemented; type stuff at your own risk)' >&2
+}
+
+try_unlock() {
+    local dev="$1"
+
+    if test -z "$PASSWORD"; then
+        if test -t 0; then
+            echo -n "  supply password to unlock: "
+            read PASSWORD
+        fi
+    fi
+    if test -n "$PASSWORD"; then
+        sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"
+    fi
+}
+
+if test -z "$DEVICES"; then
+    DEVICES=$(nvme list | awk '/^\/dev\//{print $1}' | LC_ALL=C sort -Vu)
+fi
+
+for dev in $DEVICES; do
+    if ! sedutil-cli --isValidSED "$dev" 2>/dev/null |
+            grep -q '[[:blank:]]SED[[:blank:]]'; then
+        echo "$dev is NOT A SED DEVICE" >&2
+        continue
+    fi
+    query=$(sedutil-cli --query "$dev" | cat -v)
+    locked_value=$(printf '%s' "$query" | sed -ne '
+        s/.*[[:blank:]]Locked[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
+    locking_enabled_value=$(printf '%s' "$query" | sed -ne '
+        s/.*[[:blank:]]LockingEnabled[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
+    locking_supported_value=$(printf '%s' "$query" | sed -ne '
+        s/.*[[:blank:]]LockingSupported[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
+    combined="$locked_value$locking_enabled_value$locking_supported_value"
+
+    if test "$combined" = "YYY"; then
+        echo "$dev is locked"
+        if test "$ARGV0" = sedutil-unlock; then
+            try_unlock "$dev"
+        fi
+    elif test "$combined" = "NYY"; then
+        echo "$dev is NOT locked"
+        if test "$ARGV0" = sedutil-lock; then
+            try_lock "$dev"
+        fi
+    else
+        echo "$dev has unexpected lock state:\
+ supported=$locking_supported_value enabled=$locking_enabled_value\
+ locked=$locked"
+    fi
+done
