@@ -5,7 +5,7 @@ cd "$(dirname "$0")"  # jump to curdir
 oscodename=${1:-ubuntu/focal}  # ubuntu/focal
 upname=sedutil
 upversion=${2:-1.15.1}      # sedutil version
-debversion=${3:-0osso0}     # deb build version, e.g. 0osso1
+debversion=${3:-0osso1}     # deb build version, e.g. 0osso1
 
 echo "Usage: $0 [$oscodename [$upversion [$debversion]]]"
 echo ".. continuing"
