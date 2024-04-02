@@ -1,5 +1,6 @@
 #!/bin/sh
-# sedutil-helper (part of ossobv/sedutil-deb) // wdoekes/2022 // Public Domain
+# sedutil-helper (part of ossobv/sedutil-deb) // wdoekes/2022,2024
+#   // Public Domain
 #
 # Script to simplify unlocking multiple drives with the same password.
 #
@@ -99,14 +100,14 @@ for dev in $DEVICES; do
         s/.*[[:blank:]]LockingEnabled[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
     locking_supported_value=$(printf '%s' "$query" | sed -ne '
         s/.*[[:blank:]]LockingSupported[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
-    combined="$locked_value$locking_enabled_value$locking_supported_value"
+    can_has_is="$locking_supported_value$locking_enabled_value$locked_value"
 
-    if test "$combined" = "YYY"; then
+    if test "$can_has_is" = "YYY"; then  # {can,has,is} lock(ed)
         echo "$dev is locked"
         if test "$ARGV0" = sedutil-unlock; then
             try_unlock "$dev"
         fi
-    elif test "$combined" = "NYY"; then
+    elif test "$can_has_is" = "YYN"; then  # {can,has,is} lock(ed)
         echo "$dev is NOT locked"
         if test "$ARGV0" = sedutil-lock; then
             try_lock "$dev"
@@ -114,6 +115,6 @@ for dev in $DEVICES; do
     else
         echo "$dev has unexpected lock state:\
  supported=$locking_supported_value enabled=$locking_enabled_value\
- locked=$locked"
+ is_locked=$locked_value"
     fi
 done
