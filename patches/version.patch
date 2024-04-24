@@ -1,7 +1,10 @@
+Description: get the version by the path
+ We're building from a tarball. But we still want a version.
+
 --- a/linux/GitVersion.sh
 +++ b/linux/GitVersion.sh
 @@ -1,9 +1,4 @@
- #!/bin/bash 
+ #!/bin/bash
  #set -x
 -GIT=`which git`
 -if [ "x"${GIT} == "x" ]; then

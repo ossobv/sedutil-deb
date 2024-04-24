@@ -1,0 +1,26 @@
+Description: 1.49 has a double LOGX def. Maybe fix?
+ Unsure what the diff is between CLog and RCLog.
+
+diff --git a/Common/log.h b/Common/log.h
+index 0024bf6..2dc4d04 100644
+--- a/Common/log.h
++++ b/Common/log.h
+@@ -327,17 +327,11 @@ extern TLogLevel& RCLogLevel;
+     if (level > CLOG_MAX_LEVEL) ;\
+     else if (!(level > CLogLevel || !Output2FILE::Stream()))
+ 
+-#define	LOGX(level) \
+-	if (level > CLOG_MAX_LEVEL) ;\
+-	else if (level > RCLogLevel || !Output2FILE::Stream()) ; \
+-	else RCLog().Get(level, outputFormat)
+-#define	LOG LOGX
+-
+ extern sedutiloutput outputFormat;
+ 
+ #define	LOGX(level) \
+ 	if (level > CLOG_MAX_LEVEL) ;\
+-	else if (level > RCLog::Level() || !Output2FILE::Stream()) ; \
++	else if (level > RCLogLevel || !Output2FILE::Stream()) ; \
+ 	else RCLog().Get(level, outputFormat)
+ #define	LOG LOGX
+ 

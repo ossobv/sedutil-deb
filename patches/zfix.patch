@@ -1,0 +1,50 @@
+diff --git a/linux/DtaDevOS.cpp b/linux/DtaDevOS.cpp
+index 5261e73..f7227a7 100644
+--- a/linux/DtaDevOS.cpp
++++ b/linux/DtaDevOS.cpp
+@@ -57,7 +57,7 @@ void DtaDevOS::init(const char * devref)
+ {
+ 	LOG(D1) << "DtaDevOS::init " << devref;
+ 
+-	memset(&disk_info, 0, sizeof(OPAL_DiskInfo));
++	memset(&disk_info, 0, sizeof(DTA_DEVICE_INFO));
+ 	dev = devref;
+ 
+ 	if (!strncmp(devref, "/dev/nvme", 9))
+@@ -104,16 +104,17 @@ uint8_t DtaDevOS::sendCmd(ATACOMMAND cmd, uint8_t protocol, uint16_t comID,
+ 	return drive->sendCmd(cmd, protocol, comID, buffer, bufferlen);
+ }
+ 
+-void DtaDevOS::identify(OPAL_DiskInfo& disk_info)
++bool DtaDevOS::identify(DTA_DEVICE_INFO& disk_info)
+ {
+-	if (!isOpen) return; //disk open failed so this will too
++	if (!isOpen) return false; //disk open failed so this will too
+ 	if (NULL == drive)
+ 	{
+ 		LOG(E) << "DtaDevOS::identify ERROR - unknown disk type";
+-		return;
++		return false;
+ 	}
+ 
+ 	drive->identify(disk_info);
++        return true;
+ }
+ 
+ void DtaDevOS::osmsSleep(uint32_t ms)
+diff --git a/linux/DtaDevOS.h b/linux/DtaDevOS.h
+index beeacb3..d391c9c 100644
+--- a/linux/DtaDevOS.h
++++ b/linux/DtaDevOS.h
+@@ -55,9 +55,9 @@ protected:
+      */
+     void osmsSleep(uint32_t ms);
+     /** OS specific routine to send an ATA identify to the device */
+-    void identify(OPAL_DiskInfo& disk_info);
++    bool identify(DTA_DEVICE_INFO& disk_info);
+     /** return drive size in bytes */
+-    unsigned long long getSize();
++    const unsigned long long getSize();
+     int fd; /**< Linux handle for the device  */
+ private:
+     /** OS specific routine to send a SCSI INQUIRY to the device */

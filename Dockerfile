@@ -50,12 +50,14 @@ RUN . /etc/os-release && \
 # file (README.rst) so the COPY doesn't fail.)
 COPY ./README.rst .cache/${upname}_${upversion}.orig.tar.g[z] /build/
 #ARG upsrc_md5=610301fca946d515251c30a4e26bd6a0  # for 1.15.1
-ARG upsrc_md5=a3e035ae167936ba9364bb121120b499  # for 1.20.0
+#ARG upsrc_md5=a3e035ae167936ba9364bb121120b499  # for 1.20.0
+ARG upsrc_md5=ed4705950b5d460cdf87dfc9abda83b0  # for 1.49
 RUN if ! test -s /build/${upname}_${upversion}.orig.tar.gz; then \
     url="https://codeload.github.com/Drive-Trust-Alliance/sedutil/tar.gz/${upversion}" && \
     echo "Fetching: ${url}" >&2 && \
     curl --fail "${url}" >/build/${upname}_${upversion}.orig.tar.gz; fi
-RUN test $(md5sum /build/${upname}_${upversion}.orig.tar.gz | awk '{print $1}') = ${upsrc_md5}
+RUN test $(md5sum /build/${upname}_${upversion}.orig.tar.gz | \
+           awk '{print $1}' | tee /dev/stderr) = ${upsrc_md5}
 RUN cd /build && tar zxf "${upname}_${upversion}.orig.tar.gz"
 COPY . /build/${upname}-${upversion}/debian/
 RUN cp /build/debian/changelog /build/${upname}-${upversion}/debian/changelog && \

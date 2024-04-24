@@ -1,3 +1,6 @@
+Description: fix absolute path to sedutil-cli in testsuite
+ This script is included in the final deb. Make sure it can be executed.
+
 --- a/linux/TestSuite.sh
 +++ b/linux/TestSuite.sh
 @@ -12,7 +12,7 @@ echo  Last chance to hit Ctrl-c an keep the data on your drive

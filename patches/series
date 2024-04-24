@@ -1,3 +1,5 @@
+logging.patch
 static-linuxpba.patch
 testsuite.patch
 version.patch
+zfix.patch
