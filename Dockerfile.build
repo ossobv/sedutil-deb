@@ -15,6 +15,7 @@ echo ".. continuing"
 osdistro=${oscodename%/*}   # debian (or ubuntu)
 oscodename=${oscodename#*/} # stretch (or bionic)
 case $osdistro/$oscodename in
+debian/bookworm)osdistshort=deb; oscodenum=12;;
 debian/bullseye)osdistshort=deb; oscodenum=11;;
 debian/buster)  osdistshort=deb; oscodenum=10;;
 debian/stretch) osdistshort=deb; oscodenum=9;;
