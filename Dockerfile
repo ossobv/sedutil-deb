@@ -1,7 +1,7 @@
 ARG osdistro=ubuntu
 ARG oscodename=jammy
 
-FROM ossobv/$osdistro:$oscodename
+FROM $osdistro:$oscodename
 LABEL maintainer="Walter Doekes <wjdoekes+sedutil@osso.nl>"
 LABEL dockerfile-vcs=https://github.com/ossobv/sedutil-deb
 

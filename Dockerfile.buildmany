@@ -1,0 +1,6 @@
+#!/bin/sh -ex
+./Dockerfile.build ubuntu/jammy    # ubu22.04
+./Dockerfile.build ubuntu/focal    # ubu20.04
+./Dockerfile.build debian/bookworm # deb12
+./Dockerfile.build debian/bullseye # deb11
+./Dockerfile.build debian/buster   # deb10
