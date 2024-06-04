@@ -1,3 +1,9 @@
+sedutil (1.20.0-0osso2+REL) stable; urgency=medium
+
+  * Bugfix for sedutil-helper when drive does not have locking enabled.
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 04 Jun 2024 11:57:12 +0200
+
 sedutil (1.20.0-0osso1+REL) stable; urgency=medium
 
   * Add partx + wait to sedutil-helper after unlock. Should fix missing

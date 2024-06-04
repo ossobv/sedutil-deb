@@ -1,7 +1,7 @@
 ARG osdistro=ubuntu
-ARG oscodename=focal
+ARG oscodename=jammy
 
-FROM $osdistro:$oscodename
+FROM ossobv/$osdistro:$oscodename
 LABEL maintainer="Walter Doekes <wjdoekes+sedutil@osso.nl>"
 LABEL dockerfile-vcs=https://github.com/ossobv/sedutil-deb
 
@@ -29,7 +29,7 @@ RUN apt-get update -q && \
 COPY control /build/debian/control
 RUN mk-build-deps --install --remove --tool "apt-get -y" /build/debian/control
 
-# ubuntu, ubu, focal, sedutil, 1.15.1, '', 0osso1
+# ubuntu, ubu, jammy, sedutil, 1.15.1, '', 0osso1
 ARG osdistro osdistshort oscodename upname upversion debepoch= debversion
 
 COPY changelog /build/debian/changelog
