@@ -1,3 +1,9 @@
+sedutil (1.20.0-0osso3+REL) stable; urgency=medium
+
+  * Include file fix so build succeeds on Ubuntu/Noble.
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 03 Sep 2024 09:34:11 +0200
+
 sedutil (1.20.0-0osso2+REL) stable; urgency=medium
 
   * Bugfix for sedutil-helper when drive does not have locking enabled.
