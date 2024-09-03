@@ -1,3 +1,4 @@
+fix-missing-cstdint.patch
 static-linuxpba.patch
 testsuite.patch
 version.patch

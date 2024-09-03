@@ -1,0 +1,29 @@
+Description: fix g++ 13 complaints about undefined uint8_t
+ Needed on Ubuntu/Noble.
+
+--- a/Common/log.h
++++ b/Common/log.h
+@@ -40,8 +40,7 @@
+ 
+ #include <sstream>
+ #include <string>
+-#include <stdio.h>
+-#include <stdlib.h>
++#include "os.h"
+ #include "DtaOptions.h"
+ 
+ inline std::string NowTime();
+--- a/linux/os.h
++++ b/linux/os.h
+@@ -18,8 +18,9 @@ along with sedutil.  If not, see <http:/
+ 
+  * C:E********************************************************************** */
+ #pragma once
+-#include <stdlib.h>
+-#include <stdint.h>
++#include <cstdio>
++#include <cstdlib>
++#include <cstdint>
+ #include <unistd.h>
+ #include <string.h>
+ #include <errno.h>
