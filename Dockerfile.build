@@ -3,11 +3,11 @@ cd "$(dirname "$0")"  # jump to curdir
 set -eu
 
 # Pass these on the command line.
-oscodename=${1:-ubuntu/jammy}  # ubuntu/jammy
+oscodename=${1:-ubuntu/noble}  # ubuntu/noble
 upname=sedutil
 upversion=${2:-1.20.0}      # sedutil version
 debepoch=
-debversion=${3:-0osso2}     # deb build version, e.g. 0osso1
+debversion=${3:-0osso3}     # deb build version, e.g. 0osso1
 
 echo "Usage: $0 [$oscodename [$upversion [$debversion]]]"
 echo ".. continuing"
@@ -21,6 +21,7 @@ debian/buster)  osdistshort=deb; oscodenum=10;;
 debian/stretch) osdistshort=deb; oscodenum=9;;
 debian/jessie)  osdistshort=deb; oscodenum=8;;
 debian/wheezy)  osdistshort=deb; oscodenum=7;;
+ubuntu/noble)   osdistshort=ubu; oscodenum=24.04;;
 ubuntu/jammy)   osdistshort=ubu; oscodenum=22.04;;
 ubuntu/focal)   osdistshort=ubu; oscodenum=20.04;;
 ubuntu/bionic)  osdistshort=ubu; oscodenum=18.04;;

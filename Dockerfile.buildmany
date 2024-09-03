@@ -1,4 +1,5 @@
 #!/bin/sh -ex
+./Dockerfile.build ubuntu/noble    # ubu24.04
 ./Dockerfile.build ubuntu/jammy    # ubu22.04
 ./Dockerfile.build ubuntu/focal    # ubu20.04
 ./Dockerfile.build debian/bookworm # deb12
