@@ -30,6 +30,14 @@ ubuntu/trusty)  osdistshort=ubu; oscodenum=14.04;;
 esac
 _shortver=$osdistshort$oscodenum
 
+# Expected output dir (epoch is not in the deb filename):
+outdir=Dockerfile.out/$oscodename/${upname}_${upversion}-${debversion}
+outdir=$outdir+$osdistshort$oscodenum
+if test -d "$outdir"; then
+    echo "$outdir: exists, skipping build..." >&2
+    exit 0
+fi
+
 # Docker disallows certain tokens in versions.
 dockversion=$(echo build-${upname}-${upversion}-${debversion}-${oscodename} |
     sed -e 's/[^0-9A-Za-z_.-]/_/g')
