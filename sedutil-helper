@@ -67,22 +67,31 @@ try_unlock() {
         fi
     fi
     if test -n "$PASSWORD"; then
-        if sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"; then
-            # Prefer namespace-device if available.
-            for dev in ${dev}n? ${dev}; do
-                test -b "$dev" && break || true
-            done
-            local try
-            # I think this works immediately. But we may need to see
-            # some live action in the field to confirm.
-            for try in 1 1 1 1 1 1 1 0; do
-                partx -u "$dev" 2>/dev/null && break || true
-                echo -n .
-                sleep $try
-            done
-            if test $try -eq 0; then
-                partx -u "$dev" || echo "failed to load partitions on $dev"
+        if ! sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"; then
+            echo "$dev: failed to unlock" >&2
+            exit 1
+        elif sedutil-cli --query "$dev" |
+                grep --text -qF ' MBRDone = N, MBREnabled = Y,'; then
+            if ! sedutil-cli --setMBRDone on "$PASSWORD" "$dev"; then
+                echo "$dev: failed to set mbrdone" >&2
+                exit 1
             fi
+        fi
+
+        # Prefer namespace-device if available.
+        for dev in ${dev}n? ${dev}; do
+            test -b "$dev" && break || true
+        done
+        # I think this works immediately. But we may need to see
+        # some live action in the field to confirm.
+        local try
+        for try in 1 1 1 1 1 1 1 0; do
+            partx -u "$dev" 2>/dev/null && break || true
+            echo -n .
+            sleep $try
+        done
+        if test $try -eq 0; then
+            partx -u "$dev" || echo "$dev: failed to load partitions" >&2
         fi
     fi
 }
@@ -106,8 +115,17 @@ for dev in $DEVICES; do
     locking_supported_value=$(printf '%s' "$query" | sed -ne '
         s/.*[[:blank:]]LockingSupported[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
     can_has_is="$locking_supported_value$locking_enabled_value$locked_value"
+    mbrlock=$(printf '%s' "$query" | sed -ne '
+        s/.* MBRDone = \(.\), MBREnabled = \(.\),.*/\1\2/p')
+    case "$mbrlock" in
+    Y?) mbrlock=N;;
+    NY) mbrlock=Y;;
+    NN) mbrlock=N;;
+    *) echo "$dev: unhandled mbrlock state $mbrlock" >&2; exit 1;;
+    esac
 
-    if test "$can_has_is" = "YYY"; then  # {can,has,is} lock(ed)
+    if test "$can_has_is" = "YYY" ||  # {can,has,is} lock(ed)
+            test "$mbrlock" = Y; then
         echo "$dev is locked"
         if test "$ARGV0" = sedutil-unlock; then
             try_unlock "$dev"
