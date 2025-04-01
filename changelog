@@ -1,3 +1,15 @@
+sedutil (1.20.0-0osso4+REL) stable; urgency=medium
+
+  * sedutil-cli is patched to take "--passwordSource env" as argument. Along
+    with the SEDUTIL_PASSWORD (and SEDUTIL_NEWPASSWORD) environment
+    variable(s) you can avoid leaking command lines on the command line.
+  * sedutil-unlock change: SED_PASSWORD/SED_DEVICE envvars are now called
+    SEDUTIL_PASSWORD/SEDUTIL_DEVICE.
+  * sedutil-unlock improvement to also detect non-nvme SED drives.
+  * sedutil-unlock improvement that also checks/unlocks MBRDone.
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 01 Apr 20254 17:37:28 +0200
+
 sedutil (1.20.0-0osso3+REL) stable; urgency=medium
 
   * Include file fix so build succeeds on Ubuntu/Noble.

@@ -7,7 +7,7 @@ oscodename=${1:-ubuntu/noble}  # ubuntu/noble
 upname=sedutil
 upversion=${2:-1.20.0}      # sedutil version
 debepoch=
-debversion=${3:-0osso3}     # deb build version, e.g. 0osso1
+debversion=${3:-0osso4}     # deb build version, e.g. 0osso1
 
 echo "Usage: $0 [$oscodename [$upversion [$debversion]]]"
 echo ".. continuing"
