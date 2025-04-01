@@ -1,13 +1,13 @@
 #!/bin/sh
-# sedutil-helper (part of ossobv/sedutil-deb) // wdoekes/2022,2024
+# sedutil-helper (part of ossobv/sedutil-deb) // wdoekes/2022,2024,2025
 #   // Public Domain
 #
 # Script to simplify unlocking multiple drives with the same password.
 #
 set -eu
 
-PASSWORD=${SED_PASSWORD:-}
-DEVICES=${SED_DEVICES:-}
+PASSWORD=${SEDUTIL_PASSWORD:-}
+DEVICES=${SEDUTIL_DEVICES:-}
 ARGV0=${0##*/}
 
 case ${1:-} in
@@ -16,7 +16,7 @@ case ${1:-} in
     echo 'usage: sedutil-helper       # to list SED drives'
     echo 'usage: sedutil-unlock       # to unlock SED drives'
     echo
-    echo 'optional env: SED_DEVICES SED_PASSWORD'
+    echo 'optional env: SEDUTIL_DEVICES SEDUTIL_PASSWORD'
     exit 0
 esac
 if test $# -ne 0; then
