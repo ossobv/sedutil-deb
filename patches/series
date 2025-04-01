@@ -1,4 +1,5 @@
 fix-missing-cstdint.patch
+passwordsource-env.patch
 static-linuxpba.patch
 testsuite.patch
 version.patch

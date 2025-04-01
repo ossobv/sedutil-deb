@@ -67,12 +67,14 @@ try_unlock() {
         fi
     fi
     if test -n "$PASSWORD"; then
-        if ! sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"; then
+        if ! SEDUTIL_PASSWORD=$PASSWORD sedutil-cli --passwordSource env \
+                --setLockingRange 0 RW - "$dev"; then
             echo "$dev: failed to unlock" >&2
             exit 1
         elif sedutil-cli --query "$dev" |
                 grep --text -qF ' MBRDone = N, MBREnabled = Y,'; then
-            if ! sedutil-cli --setMBRDone on "$PASSWORD" "$dev"; then
+            if ! SEDUTIL_PASSWORD=$PASSWORD sedutil-cli --passwordSource env \
+                    --setMBRDone on - "$dev"; then
                 echo "$dev: failed to set mbrdone" >&2
                 exit 1
             fi
