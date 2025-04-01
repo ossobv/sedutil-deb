@@ -68,6 +68,10 @@ try_unlock() {
     fi
     if test -n "$PASSWORD"; then
         if sedutil-cli --setLockingRange 0 RW "$PASSWORD" "$dev"; then
+            # Prefer namespace-device if available.
+            for dev in ${dev}n? ${dev}; do
+                test -b "$dev" && break || true
+            done
             local try
             # I think this works immediately. But we may need to see
             # some live action in the field to confirm.
@@ -84,7 +88,8 @@ try_unlock() {
 }
 
 if test -z "$DEVICES"; then
-    DEVICES=$(nvme list | awk '/^\/dev\//{print $1}' | LC_ALL=C sort -Vu)
+    DEVICES=$(sedutil-cli --scan 2>/dev/null |
+              awk '$1~"^/dev/"&&$2!="No"{print $1}' | LC_ALL=C sort -V)
 fi
 
 for dev in $DEVICES; do
