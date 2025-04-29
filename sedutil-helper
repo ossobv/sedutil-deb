@@ -71,7 +71,7 @@ try_unlock() {
                 --setLockingRange 0 RW - "$dev"; then
             echo "$dev: failed to unlock" >&2
             exit 1
-        elif sedutil-cli --query "$dev" |
+        elif sedutil-cli --query "$dev" 2>/dev/null |
                 grep --text -qF ' MBRDone = N, MBREnabled = Y,'; then
             if ! SEDUTIL_PASSWORD=$PASSWORD sedutil-cli --passwordSource env \
                     --setMBRDone on - "$dev"; then
@@ -109,7 +109,7 @@ for dev in $DEVICES; do
         echo "$dev is NOT A SED DEVICE" >&2
         continue
     fi
-    query=$(sedutil-cli --query "$dev" | cat -v)
+    query=$(sedutil-cli --query "$dev" 2>/dev/null | cat -v)
     locked_value=$(printf '%s' "$query" | sed -ne '
         s/.*[[:blank:]]Locked[[:blank:]]*=[[:blank:]]*\(.\).*/\1/p')
     locking_enabled_value=$(printf '%s' "$query" | sed -ne '
