@@ -99,8 +99,12 @@ try_unlock() {
 }
 
 if test -z "$DEVICES"; then
-    DEVICES=$(sedutil-cli --scan 2>/dev/null |
-              awk '$1~"^/dev/"&&$2!="No"{print $1}' | LC_ALL=C sort -V)
+    # Workaround: https://github.com/Drive-Trust-Alliance/sedutil/issues/502
+    # DEVICES=$(sedutil-cli --scan 2>/dev/null |
+    #           awk '$1~"^/dev/"&&$2!="No"{print $1}' | LC_ALL=C sort -V)
+    DEVICES=$(for x in /dev/disk/by-id/*; do
+        if test "$x" = "${x%-part*}"; then readlink $x; fi; done |
+        sed -e 's@^[.][.]/[.][.]@/dev@' | sort -Vu)
 fi
 
 for dev in $DEVICES; do
