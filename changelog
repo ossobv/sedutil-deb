@@ -1,3 +1,17 @@
+sedutil (1.20.0-0osso5+REL) stable; urgency=medium
+
+  * sedutil-helper works around sedutil bug 502 (partial --scan results)
+    by manually looking in /dev/disk/ for devices. This will yield more
+    results than just SED capable drives, but that's not an issue.
+  * sedutil-unlock will try to unlock any drive it finds. This is actually a
+    good thing, as we've seen certain models that are ambiguous about whether
+    they are encrypted or not:
+    - Micron MTFDKCC30T7TGR needs MBREnabled=Y to be "encrypted";
+    - Seagate ST10000NM0226 needs MBREnabled=Y to be "encrypted";
+    even though it already has LockingEnabled=Y.
+
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 01 Jul 2025 16:45:14 +0200
+
 sedutil (1.20.0-0osso4+REL) stable; urgency=medium
 
   * sedutil-cli is patched to take "--passwordSource env" as argument. Along
@@ -8,7 +22,7 @@ sedutil (1.20.0-0osso4+REL) stable; urgency=medium
   * sedutil-unlock improvement to also detect non-nvme SED drives.
   * sedutil-unlock improvement that also checks/unlocks MBRDone.
 
- -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 01 Apr 20254 17:37:28 +0200
+ -- Walter Doekes <wjdoekes+sedutil@osso.nl>  Tue, 01 Apr 2025 17:37:28 +0200
 
 sedutil (1.20.0-0osso3+REL) stable; urgency=medium
 
